@@ -33,7 +33,7 @@ public class BordersController {
     private TextField txtAnno; // Value injected by FXMLLoader
 
     @FXML // fx:id="boxNazione"
-    private ComboBox<String> boxNazione; // Value injected by FXMLLoader
+    private ComboBox<Country> boxNazione; // Value injected by FXMLLoader
 
     @FXML // fx:id="txtResult"
     private TextArea txtResult; // Value injected by FXMLLoader
@@ -42,6 +42,7 @@ public class BordersController {
 
     @FXML
     void doCalcolaConfini(ActionEvent event) {
+    	this.boxNazione.getItems().clear();
     	try {
     		int year = Integer.parseInt(this.txtAnno.getText());
     		if(year < 0) {
@@ -56,7 +57,7 @@ public class BordersController {
     		model.createGraph();
     		
     		for(Country c : model.getGraphVertexSet())
-    			this.boxNazione.getItems().add(c.getStateName()) ;
+    			this.boxNazione.getItems().add(c) ;
     		
     		List<Country> list = model.getNumStatiConfinanti() ;
     		
@@ -72,13 +73,24 @@ public class BordersController {
 
     @FXML
     void doSimula(ActionEvent event) {
-    	String country = this.boxNazione.getValue() ;
+    	Country country = this.boxNazione.getValue() ;
     	
     	if(country == null) {
     		this.txtResult.appendText("Scegli una nazione.\n");
     		return ;
     	}
     	
+    	model.simula(country) ;
+    	int simT = model.getTSimulazione();
+    	List<Country> stanziali = model.getCountriesStanziali();
+    	
+    	txtResult.setText("Simulazione dallo stato "+country+"\n");
+    	txtResult.appendText("Durata: "+simT+"\n");
+    	
+    	for(Country c : stanziali) {
+    		if(c.getNumbers()!=0)
+    			txtResult.appendText(c.getStateAbb()+", "+ c.getStateName()+" = "+c.getNumbers()+"\n");
+    	}
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete

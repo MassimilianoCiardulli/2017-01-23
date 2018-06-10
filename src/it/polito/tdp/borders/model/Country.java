@@ -17,10 +17,12 @@ import java.util.Comparator;
  */
 public class Country {
 
+
 	private int cCode ; // Country Code for the state
 	private String stateAbb ; // State Abbreviation (3 capital letters)
 	private String stateName ; // Full State name
 	private int borders ;
+	private int numbers ;
 	
 	/**
 	 * Initialize a new {@link Country} object, with full parameters.
@@ -35,6 +37,7 @@ public class Country {
 		this.stateAbb = stateAbb;
 		this.stateName = stateName;
 		this.borders = 0 ;
+		numbers = 0 ;
 	}
 
 	/**
@@ -113,7 +116,7 @@ public class Country {
 	 */
 	@Override
 	public String toString() {
-		return String.format("[%s=%s]", stateAbb, stateName);
+		return this.stateName;
 	}
 
 	public int getBorders() {
@@ -124,6 +127,14 @@ public class Country {
 		this.borders = borders;
 	}
 	
+	public int getNumbers() {
+		return numbers;
+	}
+
+	public void setNumbers(int numbers) {
+		this.numbers = numbers;
+	}
+
 	static class OrdinaPerBorders implements Comparator<Country> {
 
 		@Override
@@ -142,5 +153,15 @@ public class Country {
 			return o1.stateName.compareTo(o2.stateName);
 		}
 		
+	}
+	
+	static class NumbersDESC implements Comparator<Country> {
+
+		@Override
+		public int compare(Country o1, Country o2) {
+			// TODO Auto-generated method stub
+			return o2.numbers-o1.numbers;
+		}
+
 	}
 }

@@ -22,6 +22,7 @@ public class Model {
 	private List<Country> countries ;
 	private List<Border> borders ;
 	private Graph<Country, DefaultEdge> graph ;
+	private Simulator s ;
 	
 	public Model() {
 		countryIdMap = new CountryIdMap();
@@ -73,5 +74,26 @@ public class Model {
 			list.add(c) ;
 		Collections.sort(list, new Country.OrdinaPerNome());
 		return list ;
+	}
+
+	public void simula(Country country) {
+		s = new Simulator();
+		s.init(this.graph, country);
+		s.run();
+	}
+
+	public int getTSimulazione() {
+		return s.getT();
+	}
+
+	public List<Country> getCountriesStanziali() {
+		Map<Country, Integer> map = s.getStanziali();
+		List<Country> ltemp = new ArrayList<>();
+		for(Country c : map.keySet()) {
+			c.setNumbers(map.get(c));
+			ltemp.add(c);
+		}
+		Collections.sort(ltemp, new Country.NumbersDESC());
+		return ltemp;
 	}
 }
