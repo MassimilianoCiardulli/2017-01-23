@@ -1,5 +1,7 @@
 package it.polito.tdp.borders.model;
 
+import java.util.Comparator;
+
 /**
  * Java Bean class for representing instances of the COUNTRY table in the COUNTRIES data-set.
  * 
@@ -18,6 +20,7 @@ public class Country {
 	private int cCode ; // Country Code for the state
 	private String stateAbb ; // State Abbreviation (3 capital letters)
 	private String stateName ; // Full State name
+	private int borders ;
 	
 	/**
 	 * Initialize a new {@link Country} object, with full parameters.
@@ -31,6 +34,7 @@ public class Country {
 		this.cCode = cCode;
 		this.stateAbb = stateAbb;
 		this.stateName = stateName;
+		this.borders = 0 ;
 	}
 
 	/**
@@ -74,6 +78,7 @@ public class Country {
 	public void setStateName(String stateName) {
 		this.stateName = stateName;
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -110,7 +115,32 @@ public class Country {
 	public String toString() {
 		return String.format("[%s=%s]", stateAbb, stateName);
 	}
+
+	public int getBorders() {
+		return borders;
+	}
+
+	public void setBorders(int borders) {
+		this.borders = borders;
+	}
 	
+	static class OrdinaPerBorders implements Comparator<Country> {
+
+		@Override
+		public int compare(Country c1, Country c2) {
+
+			return c2.borders - c1.borders;
+		}
+		
+	}
 	
-	
+	static class OrdinaPerNome implements Comparator<Country> {
+
+		@Override
+		public int compare(Country o1, Country o2) {
+
+			return o1.stateName.compareTo(o2.stateName);
+		}
+		
+	}
 }
